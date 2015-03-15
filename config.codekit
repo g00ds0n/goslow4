@@ -11,17 +11,6 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
-	"\/goslow\/goslow.png": {
-		"fileType": 32768,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"initialSize": 2.81317e+06,
-		"inputAbbreviatedPath": "\/goslow\/goslow.png",
-		"outputAbbreviatedPath": "\/goslow\/goslow.png",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"processed": 0
-		},
 	"\/goslow\/index.html": {
 		"fileType": 8192,
 		"ignore": 0,

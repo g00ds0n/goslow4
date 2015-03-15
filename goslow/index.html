@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>GoPro Video Booth</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- JQuery -->
+    <script src="lib/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="lib/fontawesome/css/font-awesome.min.css">
+
+    <!-- gopro files -->
+    <link href="css/goslow.css" rel="stylesheet" media="screen">
+    <script src="js/goslow-config.js"></script>
+    <script src="js/goslow-functions-min.js"></script>
+    <script src="js/goslow-min.js"></script>
+
+    <!-- 3rd Party JS -->
+    <script src="js/animateRotate-min.js"></script>
+
+    <!-- Video JS -->
+    <link href="lib/video.js/dist/video-js/video-js.min.css" rel="stylesheet" type="text/css">
+    <script src="lib/video.js/dist/video-js/video.js"></script>
+  </head>
+
+  <body>
+    <div class="goslow-page text-center" id="instructions">
+      <div class="text-center">
+        <video id="gopro_stream" autoplay loop class="video-js vjs-default-skin"
+          width="1024" height="576" poster="goslow.png">
+        </video>
+        <div class="muted delay-message">This display is delayed by a few seconds</div>
+      </div>
+      <div class="loading">Please wait...</div>
+      <div class="buttons">
+        <span class="text-center start-button slowmo" data-video="slowmo">
+          <button type="button" class="btn btn-warning btn-lg btn-block">5s Hi Speed</button>
+        </span>
+        <span class="text-center start-button message" data-video="message">
+          <button type="button" class="btn btn-primary btn-lg btn-block">15s Message</button>
+        </span>
+      </div>
+    </div>
+
+    <div class="hide-init goslow-page container text-center large-top-padding" id="countdown">
+      <div class='lead text-danger title'>Look at Camera</div>
+      <div class="arrow"></div>
+      <div class="count"></div>
+      <div class="muted" id="recording-info">Not recording yet</div>
+    </div>
+
+    <div class="hide-init goslow-page container-fluid text-center" id="recording">
+      <div class='lead title'>Now Recording</div>
+      <div id="recording-text"></div>
+      <div class="count"></div>
+    </div>
+
+    <div class="hide-init goslow-page container text-center large-top-padding" id="done">
+      <div class='lead title'><span id="playback_text"></span><span id="percent"></span></div>
+    </div>
+
+  </body>
+</html>
+
+
+
