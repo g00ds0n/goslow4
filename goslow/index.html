@@ -27,39 +27,46 @@
   </head>
 
   <body>
-    <div class="goslow-page text-center" id="instructions">
-      <div class="text-center">
-        <video id="gopro_stream" autoplay loop class="video-js vjs-default-skin"
-          width="1024" height="576" poster="goslow.png">
+    <div id="intro">
+      <video id="example_video" class="video-js vjs-default-skin"
+        controls preload="auto" width="1024" height="576"
+        poster="goslow.png" autoplay preload loop
+        source src="clip.mp4" type='video/mp4' />
+      </video>
+      <span class="button-template hide">
+        <button type="button" class="btn btn-lg btn-block pull-left">Block level button</button>
+      </span>
+      <span class="start-button">
+      </span>
+    </div>
+
+    <div id="ready" class="waiting text-center full-page-wrapper">
+      <button type="button" class="btn btn mode disabled active">What</button>
+      <div class="full-page">
+        <div class='lead text-danger title'>Look at Camera</div>
+        <div class="arrow">
+          <i class="fa"></i>
+        </div>
+        <div class="count"></div>
+        <div class="muted" id="recording-info">Not recording yet</div>
+      </div>
+    </div>
+
+    <div id="recording" class="waiting text-center full-page-wrapper">
+      <div class="full-page">
+        <div class='lead title'>Recording</div>
+        <div class="count">&nbsp;</div>
+      </div>
+    </div>
+
+    <div id="done" class="waiting text-center full-page-wrapper">
+      <div class="full-page">
+        <video id="replay_video" class="video-js vjs-default-skin"
+          controls preload="auto" width="1024" height="576"
+          poster="goslow.png" autoplay loop />
         </video>
-        <div class="muted delay-message">This display is delayed by a few seconds</div>
+        <div class="status">Hello</div>
       </div>
-      <div class="loading">Please wait...</div>
-      <div class="buttons">
-        <span class="text-center start-button slowmo" data-video="slowmo">
-          <button type="button" class="btn btn-warning btn-lg btn-block">5s Hi Speed</button>
-        </span>
-        <span class="text-center start-button message" data-video="message">
-          <button type="button" class="btn btn-primary btn-lg btn-block">15s Message</button>
-        </span>
-      </div>
-    </div>
-
-    <div class="hide-init goslow-page container text-center large-top-padding" id="countdown">
-      <div class='lead text-danger title'>Look at Camera</div>
-      <div class="arrow"></div>
-      <div class="count"></div>
-      <div class="muted" id="recording-info">Not recording yet</div>
-    </div>
-
-    <div class="hide-init goslow-page container-fluid text-center" id="recording">
-      <div class='lead title'>Now Recording</div>
-      <div id="recording-text"></div>
-      <div class="count"></div>
-    </div>
-
-    <div class="hide-init goslow-page container text-center large-top-padding" id="done">
-      <div class='lead title'><span id="playback_text"></span><span id="percent"></span></div>
     </div>
 
   </body>

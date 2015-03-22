@@ -126,7 +126,7 @@
 		"outputAbbreviatedPath": "\/goslow\/js\/goslow-functions-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 1,
-		"outputStyle": 1,
+		"outputStyle": 2,
 		"syntaxCheckerStyle": 0
 		},
 	"\/src\/js\/goslow.js": {
@@ -137,7 +137,7 @@
 		"outputAbbreviatedPath": "\/goslow\/js\/goslow-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 1,
-		"outputStyle": 1,
+		"outputStyle": 2,
 		"syntaxCheckerStyle": 0
 		}
 	},

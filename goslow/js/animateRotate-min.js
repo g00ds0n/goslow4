@@ -1,0 +1,1 @@
+$.fn.animateRotate=function(t,e,n,a){var r=$.speed(e,n,a),i=r.step;return this.each(function(e,n){r.step=function(t){return $.style(n,"transform","rotate("+t+"deg)"),i?i.apply(this,arguments):void 0},$({deg:0}).animate({deg:t},r)})};

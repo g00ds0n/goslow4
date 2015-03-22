@@ -25,50 +25,24 @@ function get_last() {
   $.ajax({
     url: url,
     async: false,
-    success: function(data, status, xhr){
-      url += $("tbody a.link", data).last().attr('href');
-      console.log(url);
-      $.ajax({
-        url: url,
-        async: false,
-        success: function(data1, status, xhr){
-          // Find the last anchor tag with the extension MP4
-          var latest = $("a:contains('MP4')", data1).last().attr('href');
-          // Pull the filename
-          var filename = latest.substr(0, latest.indexOf('.'));
-          // Find an LRV if one exists
-          var lrv = $("a:contains('" + filename + ".LRV')", data1).attr('href');
-          if (lrv !== undefined) {
-            latest = lrv;
-          }
-          url += latest;
-        },
-        error: function(xhr, status, error){
-          $('#done > h1').text("There was an error trying to find your video. Please try again.");
-          var playback = videojs("gopro_playback");
-          $('#done > video').remove();
-          playback.dispose();
-          setTimeout(function() {
-            $('body').fadeOut(1000, function(){
-              location.reload();
-            });
-          }, 9000);
-        },
-        dataType: 'html'
-      });
-    },
-    error: function(xhr, status, error){
-      $('#done > h1').text("There was an error trying to find your video. Please try again.");
-      var playback = videojs("gopro_playback");
-      $('#done > video').remove();
-      playback.dispose();
-      setTimeout(function() {
-        $('body').fadeOut(1000, function(){
-          location.reload();
-        });
-      }, 9000);
-    },
+    //jsonp: false,
+    //cache: true,
     dataType: 'html'
+  }).done(function(data, status, xhr){
+    // Looking for the last directory on the list
+    var last_dir = $("tbody img[alt='[DIR]']", data).last();
+    url += last_dir.closest('tr').find('a.link').attr('href');
+    //console.log(url);
+    $.ajax({
+      url: url,
+      async: false,
+      dataType: 'html'
+    }).done(function(data, status, xhr){
+      // Find the last anchor tag with the extension MP4
+      var latest = $("a:contains('MP4')", data).last().attr('href');
+      url += latest;
+      //console.log(url);
+    });
   });
   return url;
 }
@@ -81,27 +55,27 @@ function get_last() {
  * https://github.com/joshvillbrandt/GoProController/blob/master/GoProController.py
  * https://github.com/PhilMacKay/PyGoPro/blob/master/goPro.py
  */
-function command(cmd) {
+function command(cmd, ignore_fail) {
+  ignore_fail = typeof ignore_fail !== 'undefined' ? ignore_fail : false;
   if (goslow.test_mode) {
     return true;
   }
   var path = 'http://10.5.5.9/gp/gpControl/' + cmd;
   var code = null;
-  console.log(path);
   $.ajax({
     url: path,
     async: false,
     timeout: 2000,
-    success: function(data, status, xhr){
-      if (status == 'success') {
-        code = toHex(data);
-        console.log(code);
-      }
-    },
-    error: function(xhr, status, error){
-      error_restart('There was a problem connecting to the camera. Restarting the video booth.');
-    },
-    dataType: 'text'
+    jsonp: false,
+    cache: true,
+    dataType: 'jsonp',
+  }).done(function(data, status, xhr){
+    console.log(status);
+    code = data;
+  }).fail(function(xhr, status, error){
+    if (!ignore_fail) {
+      console.log(error);
+    }
   });
   return code;
 }
@@ -121,6 +95,20 @@ function previewOff() {
   command('execute?p1=gpStream&c1=stop');
 }
 
+function mode(type) {
+  switch (type) {
+    case 'photo':
+      command('command/mode?p=1');
+      break;
+    case 'multishot':
+      command('command/mode?p=2');
+      break;
+    case 'video':
+    case 'default':
+      command('command/mode?p=0');
+  }
+}
+
 function modeVideo() {
   command('command/mode?p=0');
 }
@@ -130,7 +118,22 @@ function startCapture() {
 }
 
 function stopCapture() {
-  command('command/shutter?p=0');
+  command('command/shutter?p=0', true);
+}
+
+function fov(fov) {
+  switch(fov) {
+    case 'medium':
+      command('setting/4/1');
+      break;
+    case 'narrow':
+      command('setting/4/2');
+      break;
+    case 'wide':
+    case 'default':
+      command('setting/4/0');
+      break;
+  }
 }
 
 function resolution(res) {
@@ -187,22 +190,10 @@ function frameRate(fps) {
     case 120:  // (1080)
       command('setting/3/0');
       break;
-    case 240:  // (WVGA)
+    case 240:  // (720 N)
       //command('camera/FS', '0a');
       break;
   }
-}
-
-function toHex(str) {
-  var hex = '';
-  for (var i=0; i<str.length; i++) {
-    hex += '' + str.charCodeAt(i).toString(16);
-  }
-  return hex;
-}
-
-function hexToDec(hex) {
-  return parseInt(hex.toString(), 16);
 }
 
 function next_page(show) {
