@@ -121,6 +121,12 @@ body {
   line-height: 1em;
   color: white;
 }
+#done .status {
+  font-size: 4em;
+}
+#done button {
+  margin-bottom: 10px;
+}
 .video-template {
   display: none;
 }

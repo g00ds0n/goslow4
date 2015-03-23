@@ -13,7 +13,8 @@ var goslow = {
       fov: 'medium',
       btn: 'primary',
       count: 5,
-      playback: 10,
+      playback: true,
+      iso: 6400,
     },
     {
       title: "Message",
@@ -23,7 +24,8 @@ var goslow = {
       fov: 'wide',
       btn: 'warning',
       count: 15,
-      playback: 5,
+      playback: true,
+      iso: 6400,
     },
   ],
 // Camera Variables

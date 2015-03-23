@@ -26,7 +26,7 @@ $(document).ready(function() {
   // Slides in waiting move to the bottom for later animation
   $('.waiting').css('top', $(window).height());
 
-  // Center "Look at Camera" page
+  // Center page
   $('.full-page-wrapper').height($(window).height()).width($(window).width());
   $('.full-page').each(function(){
     var top = ($(window).height() - $(this).height())/2;
@@ -46,18 +46,18 @@ function preload() {
   //powerOn();
   //previewOff();
   stopCapture();
-  //startCapture();
   //volume('00');
   // Show user buttons after camera checks out
   $('#intro .start-button button').show().bind('click', ready);
 }
 
+var choice;
 /**
  *
  */
 var ready = function() {
   // Setup the camera
-  var choice = goslow.choices[$(this).data('choice')];
+  choice = goslow.choices[$(this).data('choice')];
   $('#ready .mode')
     .addClass('btn-' + choice.btn)
     .html(choice.title);
@@ -65,6 +65,14 @@ var ready = function() {
   resolution(choice.resolution);
   frameRate(choice.fps);
   fov(choice.fov);
+  iso(choice.iso);
+
+  // Show/hide the replay video
+  if (!choice.playback) {
+    $('#playback').hide();
+  }
+
+
 
   $('#intro .start-button button').unbind();
   $(this).removeClass('btn-' + choice.btn).addClass('btn-danger');
@@ -95,7 +103,7 @@ var ready = function() {
             setTimeout(function(){
               // Start recording when the count is done
               //$('#ready').fadeOut(500);
-              recording(choice.count);
+              recording();
             }, 1000);
           }
         }, 1000);
@@ -104,7 +112,8 @@ var ready = function() {
   });
 };
 
-function recording(count) {
+function recording() {
+  var count = choice.count;
   $("#recording .count").html(count);
   $('#ready').animate({top: '-=' + ($(window).height()) + 'px'}, 1500);
   $('#recording').animate({top: '-=' + ($(window).height()) + 'px'}, 1000, function(){
@@ -132,20 +141,48 @@ function recording(count) {
 function done(last) {
   $('#recording').animate({top: '-=' + ($(window).height()) + 'px'}, 2000);
   $('#done').animate({top: '-=' + ($(window).height()) + 'px'}, 1000, function(){
-    $('#done .status').html(last);
-    videojs('#replay_video').ready(function(){
-      var playback = this;
-      playback.src({src: last, type: "video/mp4"});
-    });
+
+    if (choice.playback) {
+      $('#done .status').html("Loading...");
+      $('#done button').bind('click', function(){
+        window.location.reload();
+      });
+      videojs('#replay_video').ready(function(){
+        var playback = this;
+        playback.src({src: last, type: "video/mp4"}).load().pause();
+
+        playback.on('progress', function(){
+          $('#done .progress-bar').width(parseInt(playback.bufferedPercent()*100) + '%');
+        });
+
+        playback.on('loadedalldata', function(){
+          $('#done .progress').slideUp();
+          playback.play();
+          setTimeout(function(){
+            $('#done .status').html("Enjoy!");
+          }, 500);
+        });
+
+        playback.on('ended', function(){
+          setTimeout(function(){
+            window.location.reload();
+          }, 2000);
+        });
+      });
+    }
+    else {
+      $('#done .status').html("Thanks!");
+      $('#done .full-page').each(function(){
+        var top = ($(window).height() - $(this).height())/2;
+        $(this).css({
+          top: top + 'px',
+          position: 'absolute'
+        });
+      });
+      setTimeout(function(){
+        window.location.reload();
+      }, 5000);
+    }
   });
 }
 
-function skipPlayback() {
-  $('#playback_text').html(goslow.playback_text);
-  $('#percent').text('');
-  setTimeout(function() {
-    $('body').fadeOut(1000, function(){
-      location.reload();
-    });
-  }, 9000);
-}

@@ -196,6 +196,21 @@ function frameRate(fps) {
   }
 }
 
+function iso(iso) {
+  switch(iso) {
+    case 6400:
+      command('setting/13/0');
+      break;
+    case 1600:
+      command('setting/13/1');
+      break;
+    case 400:
+    default:
+      command('setting/13/2');
+      break;
+  }
+}
+
 function next_page(show) {
   $('.goslow-page').hide();
   var height = $(window).height() + "px";
