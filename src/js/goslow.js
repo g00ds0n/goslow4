@@ -43,10 +43,9 @@ $(document).ready(function() {
  * Change camera's initial settings when the home page loads
  */
 function preload() {
-  //powerOn();
-  //previewOff();
+  fov('wide');
+  mode('video');
   stopCapture();
-  //volume('00');
   // Show user buttons after camera checks out
   $('#intro .start-button button').show().bind('click', ready);
 }
@@ -60,7 +59,7 @@ var ready = function() {
   choice = goslow.choices[$(this).data('choice')];
   $('#ready .mode')
     .addClass('btn-' + choice.btn)
-    .html(choice.title);
+    .html(choice.details);
     mode(choice.mode);
   resolution(choice.resolution);
   frameRate(choice.fps);
@@ -139,10 +138,17 @@ function recording() {
 }
 
 function done(last) {
+  var show_playback = choice.playback;
+  if (goslow.test_mode && goslow.show_clip) {
+    last = 'clip.mp4';
+  }
+  else {
+    show_playback = false;
+  }
   $('#recording').animate({top: '-=' + ($(window).height()) + 'px'}, 2000);
   $('#done').animate({top: '-=' + ($(window).height()) + 'px'}, 1000, function(){
 
-    if (choice.playback) {
+    if (show_playback) {
       $('#done .status').html("Loading...");
       $('#done button').bind('click', function(){
         window.location.reload();

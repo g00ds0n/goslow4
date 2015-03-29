@@ -13,10 +13,6 @@ body {
 .full-page-wrapper .full-page {
   width: 100%;
 }
-.delay-message {
-  display: none;
-  font-size: 2em;
-}
 #intro {
   position: absolute;
 }
@@ -121,11 +117,12 @@ body {
   line-height: 1em;
   color: white;
 }
-#done .status {
-  font-size: 4em;
+#done {
+  color: white;
+  background-color: #d9534f;
 }
-#done button {
-  margin-bottom: 10px;
+#done .status {
+  font-size: 4.2em;
 }
 .video-template {
   display: none;
